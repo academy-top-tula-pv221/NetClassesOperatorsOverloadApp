@@ -69,6 +69,52 @@
         }
     }
     
+    class Matrix
+    {
+        int[,] matrix;
+        public Matrix(int rows, int cols)
+        {
+            matrix = new int[rows, cols];
+        }
+        public int this[int row, int col]
+        {
+            get => matrix[row, col];
+            set => matrix[row, col] = value;
+        }
+    }
+
+    class User
+    {
+        string name = "";
+        string phone = "";
+        int age = 0;
+
+        public string this[string prop]
+        {
+            get
+            {
+                switch(prop)
+                {
+                    case "name": return name;
+                    case "phone": return phone;
+                    case "age": return age.ToString();
+                    default: throw new Exception("Wrong property name");
+                }
+            }
+            set
+            {
+                switch (prop)
+                {
+                    case "name": name = value; break;
+                    case "phone": phone = value; break;
+                    case "age": age = Int32.Parse(value); break;
+                    default: throw new Exception("Wrong property name");
+                }
+            }
+        }
+
+    }
+
     class Student
     {
         public string? Name { set; get; }
@@ -89,8 +135,19 @@
 
         public Student this[int index]
         {
-            set => students[index] = value;
-            get => students[index];
+            set
+            {   if(index >= 0 && index < students.Length)
+                    students[index] = value;
+                else
+                    throw new IndexOutOfRangeException();
+            }
+            get
+            {
+                if (index >= 0 && index < students.Length)
+                    return students[index];
+                else
+                    throw new IndexOutOfRangeException();
+            }
         }
         public int Size => students.Length;
     }
@@ -118,6 +175,11 @@
                 );
             for(int i = 0; i < group1.Size; i++)
                 Console.WriteLine(group1[i].Name);
+
+            User user = new User();
+            user["name"] = "Leo";
+            user["phone"] = "8 999 123-45-67";
+            user["age"] = "23";
         }
     }
 }
